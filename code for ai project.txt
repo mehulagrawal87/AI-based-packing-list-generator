@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Packing List Generator | Smart Travel Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            animation: fadeIn 1s ease;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .login-box h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-box p {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.3);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(253, 121, 168, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            box-shadow: none;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main App */
+        .app-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .app-container.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links a.active {
+            background: var(--accent);
+            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        }
+
+        .nav-links a.active:hover {
+            background: #ff6b9d;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .weather-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-card h2 i {
+            color: var(--accent);
+        }
+
+        .destination-selector {
+            margin-bottom: 20px;
+        }
+
+        .destination-selector select {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        .destination-selector select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.3);
+        }
+
+        .weather-display {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .current-weather {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .weather-icon {
+            font-size: 3rem;
+            color: var(--warning);
+        }
+
+        .temperature {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .weather-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .weather-detail {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .weather-detail i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--secondary);
+        }
+
+        /* Packing List */
+        .packing-list-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .packing-list-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .packing-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .packing-list-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .packing-list-header h2 i {
+            color: var(--accent);
+        }
+
+        .generate-btn {
+            padding: 10px 20px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .generate-btn:hover {
+            background: #00a884;
+            transform: translateY(-2px);
+        }
+
+        .packing-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .category:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .category h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category ul {
+            list-style: none;
+        }
+
+        .category li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category li:last-child {
+            border-bottom: none;
+        }
+
+        .category li i {
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Chatbot Interface */
+        .chatbot-container {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .chatbot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chatbot-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chatbot-header h2 i {
+            color: var(--accent);
+        }
+
+        .chatbot-messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            margin-bottom: 5px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            border-top-left-radius: 5px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: var(--accent);
+            border-top-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            align-self: flex-end;
+        }
+
+        .bot-message + .message-time {
+            align-self: flex-start;
+        }
+
+        .chatbot-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.3);
+        }
+
+        .chatbot-input button {
+            padding: 15px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            background: #ff6b9d;
+            transform: translateY(-2px);
+        }
+
+        /* Booking Section */
+        .booking-container {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .booking-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .booking-header {
+            margin-bottom: 20px;
+        }
+
+        .booking-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .booking-header h2 i {
+            color: var(--accent);
+        }
+
+        .booking-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.3);
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+        }
+
+        .search-flights {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .search-flights:hover {
+            background: #00a884;
+            transform: translateY(-2px);
+        }
+
+        /* Contact Page */
+        .contact-container {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-header {
+            margin-bottom: 20px;
+        }
+
+        .contact-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-header h2 i {
+            color: var(--accent);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-text p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .contact-form .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-form .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.3);
+        }
+
+        .submit-btn {
+            padding: 15px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #ff6b9d;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .packing-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .booking-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff6b9d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <h1><i class="fas fa-suitcase"></i> AI Packing List</h1>
+            <p>Your smart travel companion that generates personalized packing lists based on destination climate</p>
+            
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            
+            <button class="btn" id="loginBtn">Login</button>
+            <button class="btn btn-secondary" id="signupBtn">Create Account</button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <a href="#" class="logo" id="homeLink"><i class="fas fa-suitcase"></i> AI Packing List</a>
+                
+                <div class="nav-links">
+                    <a href="#" class="active" id="dashboardLink"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="#" id="bookingLink"><i class="fas fa-plane"></i> Book Flights</a>
+                    <a href="#" id="contactLink"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection">
+                <div class="dashboard">
+                    <!-- Weather Card -->
+                    <div class="weather-card">
+                        <h2><i class="fas fa-cloud-sun"></i> Destination Weather</h2>
+                        
+                        <div class="destination-selector">
+                            <select id="destinationSelect">
+                                <option value="">Select a destination</option>
+                                <option value="tokyo">Tokyo, Japan</option>
+                                <option value="bangkok">Bangkok, Thailand</option>
+                                <option value="seoul">Seoul, South Korea</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="hongkong">Hong Kong</option>
+                                <option value="taipei">Taipei, Taiwan</option>
+                                <option value="beijing">Beijing, China</option>
+                                <option value="shanghai">Shanghai, China</option>
+                                <option value="kualalumpur">Kuala Lumpur, Malaysia</option>
+                                <option value="jakarta">Jakarta, Indonesia</option>
+                                <option value="manila">Manila, Philippines</option>
+                                <option value="hanoi">Hanoi, Vietnam</option>
+                                <option value="hochiminh">Ho Chi Minh City, Vietnam</option>
+                                <option value="delhi">Delhi, India</option>
+                                <option value="mumbai">Mumbai, India</option>
+                                <option value="bangalore">Bangalore, India</option>
+                                <option value="colombo">Colombo, Sri Lanka</option>
+                                <option value="dhaka">Dhaka, Bangladesh</option>
+                                <option value="kathmandu">Kathmandu, Nepal</option>
+                            </select>
+                        </div>
+                        
+                        <div class="weather-display" id="weatherDisplay">
+                            <div class="current-weather">
+                                <div class="weather-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="temperature">
+                                    --°C
+                                </div>
+                            </div>
+                            
+                            <div class="weather-details">
+                                <div class="weather-detail">
+                                    <i class="fas fa-tint"></i>
+                                    <div>Humidity</div>
+                                    <div>--%</div>
+                                </div>
+                                <div class="weather-detail">
+                                    <i class="fas fa-wind"></i>
+                                    <div>Wind</div>
+                                    <div>-- km/h</div>
+                                </div>
+                                <div class="weather-detail">
+                                    <i class="fas fa-cloud-rain"></i>
+                                    <div>Rain</div>
+                                    <div>--%</div>
+                                </div>
+                                <div class="weather-detail">
+                                    <i class="fas fa-sun"></i>
+                                    <div>UV Index</div>
+                                    <div>--</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Packing List -->
+                    <div class="packing-list-container">
+                        <div class="packing-list-header">
+                            <h2><i class="fas fa-suitcase-rolling"></i> Packing List</h2>
+                            <button class="generate-btn" id="generateListBtn">
+                                <i class="fas fa-magic"></i> Generate List
+                            </button>
+                        </div>
+                        
+                        <div class="packing-list" id="packingList">
+                            <div class="category">
+                                <h3><i class="fas fa-tshirt"></i> Clothing</h3>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Select a destination first</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="category">
+                                <h3><i class="fas fa-shoe-prints"></i> Footwear</h3>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Select a destination first</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="category">
+                                <h3><i class="fas fa-toilet-paper"></i> Toiletries</h3>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Select a destination first</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="category">
+                                <h3><i class="fas fa-first-aid"></i> Health</h3>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Select a destination first</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chatbot -->
+                <div class="chatbot-container">
+                    <div class="chatbot-header">
+                        <h2><i class="fas fa-robot"></i> Travel Assistant</h2>
+                    </div>
+                    
+                    <div class="chatbot-messages" id="chatMessages">
+                        <div class="message">
+                            <div class="message-bubble bot-message">
+                                Hello! I'm your AI travel assistant. How can I help you with your trip planning today?
+                            </div>
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chatbot-input">
+                        <input type="text" id="chatInput" placeholder="Ask me anything about your trip...">
+                        <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Booking Section -->
+            <section id="bookingSection" style="display: none;">
+                <div class="booking-container">
+                    <div class="booking-header">
+                        <h2><i class="fas fa-plane"></i> Book Your Flights</h2>
+                    </div>
+                    
+                    <div class="booking-form">
+                        <div class="form-group">
+                            <label for="fromCity">From</label>
+                            <input type="text" id="fromCity" placeholder="City or Airport">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="toCity">To</label>
+                            <select id="toCity">
+                                <option value="">Select Destination</option>
+                                <option value="tokyo">Tokyo, Japan</option>
+                                <option value="bangkok">Bangkok, Thailand</option>
+                                <option value="seoul">Seoul, South Korea</option>
+                                <option value="singapore">Singapore</option>
+                                <option value="hongkong">Hong Kong</option>
+                                <option value="taipei">Taipei, Taiwan</option>
+                                <option value="beijing">Beijing, China</option>
+                                <option value="shanghai">Shanghai, China</option>
+                                <option value="kualalumpur">Kuala Lumpur, Malaysia</option>
+                                <option value="jakarta">Jakarta, Indonesia</option>
+                                <option value="manila">Manila, Philippines</option>
+                                <option value="hanoi">Hanoi, Vietnam</option>
+                                <option value="hochiminh">Ho Chi Minh City, Vietnam</option>
+                                <option value="delhi">Delhi, India</option>
+                                <option value="mumbai">Mumbai, India</option>
+                                <option value="bangalore">Bangalore, India</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="departureDate">Departure</label>
+                            <input type="date" id="departureDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="returnDate">Return (Optional)</label>
+                            <input type="date" id="returnDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="passengers">                        </div>
+                        
+                        <div class="form-group">
+                            <label for="passengers">Passengers</label>
+                            <select id="passengers">
+                                <option value="1">1 Adult</option>
+                                <option value="2">2 Adults</option>
+                                <option value="3">3 Adults</option>
+                                <option value="4">4 Adults</option>
+                                <option value="family">Family (2 Adults + 2 Children)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cabinClass">Cabin Class</label>
+                            <select id="cabinClass">
+                                <option value="economy">Economy</option>
+                                <option value="premium">Premium Economy</option>
+                                <option value="business">Business</option>
+                                <option value="first">First Class</option>
+                            </select>
+                        </div>
+                        
+                        <button class="search-flights" id="searchFlightsBtn">
+                            <i class="fas fa-search"></i> Search Flights
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contact Section -->
+            <section id="contactSection" style="display: none;">
+                <div class="contact-container">
+                    <div class="contact-header">
+                        <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+                    </div>
+                    
+                    <div class="contact-content">
+                        <div class="contact-info">
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h3>Our Location</h3>
+                                    <p>123 Travel Street, Digital City 10001</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h3>Call Us</h3>
+                                    <p>+1 (234) 567-8900</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-text">
+                                    <h3>Email Us</h3>
+                                    <p>support@aipackinglist.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-form">
+                            <div class="form-group">
+                                <label for="contactName">Your Name</label>
+                                <input type="text" id="contactName" placeholder="Enter your name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactEmail">Your Email</label>
+                                <input type="email" id="contactEmail" placeholder="Enter your email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactMessage">Your Message</label>
+                                <textarea id="contactMessage" placeholder="How can we help you?"></textarea>
+                            </div>
+                            
+                            <button class="submit-btn" id="submitContactBtn">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">About Us</a>
+                </div>
+                
+                <p class="copyright">© 2023 AI Packing List Generator. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js for background
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.3,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const appContainer = document.getElementById('appContainer');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const dashboardLink = document.getElementById('dashboardLink');
+        const bookingLink = document.getElementById('bookingLink');
+        const contactLink = document.getElementById('contactLink');
+        const homeLink = document.getElementById('homeLink');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const bookingSection = document.getElementById('bookingSection');
+        const contactSection = document.getElementById('contactSection');
+        const destinationSelect = document.getElementById('destinationSelect');
+        const weatherDisplay = document.getElementById('weatherDisplay');
+        const generateListBtn = document.getElementById('generateListBtn');
+        const packingList = document.getElementById('packingList');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const searchFlightsBtn = document.getElementById('searchFlightsBtn');
+        const submitContactBtn = document.getElementById('submitContactBtn');
+
+        // Login functionality
+        loginBtn.addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // Simple validation - in a real app, you would verify credentials with a server
+                loginPage.style.display = 'none';
+                appContainer.classList.add('active');
+                
+                // Set user avatar initial
+                const userAvatar = document.getElementById('userAvatar');
+                userAvatar.textContent = email.charAt(0).toUpperCase();
+            } else {
+                alert('Please enter both email and password');
+            }
+        });
+
+        // Signup button - just for demo
+        signupBtn.addEventListener('click', function() {
+            alert('Sign up functionality would go here in a real application');
+        });
+
+        // Navigation
+        dashboardLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            dashboardSection.style.display = 'block';
+            bookingSection.style.display = 'none';
+            contactSection.style.display = 'none';
+            
+            // Update active nav link
+            dashboardLink.classList.add('active');
+            bookingLink.classList.remove('active');
+            contactLink.classList.remove('active');
+        });
+
+        bookingLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            dashboardSection.style.display = 'none';
+            bookingSection.style.display = 'block';
+            contactSection.style.display = 'none';
+            
+            // Update active nav link
+            dashboardLink.classList.remove('active');
+            bookingLink.classList.add('active');
+            contactLink.classList.remove('active');
+        });
+
+        contactLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            dashboardSection.style.display = 'none';
+            bookingSection.style.display = 'none';
+            contactSection.style.display = 'block';
+            
+            // Update active nav link
+            dashboardLink.classList.remove('active');
+            bookingLink.classList.remove('active');
+            contactLink.classList.add('active');
+        });
+
+        homeLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            dashboardSection.style.display = 'block';
+            bookingSection.style.display = 'none';
+            contactSection.style.display = 'none';
+            
+            // Update active nav link
+            dashboardLink.classList.add('active');
+            bookingLink.classList.remove('active');
+            contactLink.classList.remove('active');
+        });
+
+        // Weather data - mock data for demo
+        const weatherData = {
+            tokyo: {
+                icon: 'fa-cloud-sun',
+                temp: '22°C',
+                humidity: '65%',
+                wind: '12 km/h',
+                rain: '20%',
+                uv: '5'
+            },
+            bangkok: {
+                icon: 'fa-sun',
+                temp: '32°C',
+                humidity: '70%',
+                wind: '8 km/h',
+                rain: '10%',
+                uv: '9'
+            },
+            seoul: {
+                icon: 'fa-cloud',
+                temp: '18°C',
+                humidity: '55%',
+                wind: '15 km/h',
+                rain: '30%',
+                uv: '4'
+            },
+            singapore: {
+                icon: 'fa-cloud-showers-heavy',
+                temp: '28°C',
+                humidity: '85%',
+                wind: '10 km/h',
+                rain: '60%',
+                uv: '7'
+            },
+            hongkong: {
+                icon: 'fa-cloud-sun-rain',
+                temp: '26°C',
+                humidity: '75%',
+                wind: '14 km/h',
+                rain: '40%',
+                uv: '6'
+            }
+        };
+
+        // Destination select change handler
+        destinationSelect.addEventListener('change', function() {
+            const selectedDestination = this.value;
+            
+            if (selectedDestination && weatherData[selectedDestination]) {
+                const weather = weatherData[selectedDestination];
+                
+                // Update weather display
+                weatherDisplay.innerHTML = `
+                    <div class="current-weather">
+                        <div class="weather-icon">
+                            <i class="fas ${weather.icon}"></i>
+                        </div>
+                        <div class="temperature">
+                            ${weather.temp}
+                        </div>
+                    </div>
+                    
+                    <div class="weather-details">
+                        <div class="weather-detail">
+                            <i class="fas fa-tint"></i>
+                            <div>Humidity</div>
+                            <div>${weather.humidity}</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-wind"></i>
+                            <div>Wind</div>
+                            <div>${weather.wind}</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-cloud-rain"></i>
+                            <div>Rain</div>
+                            <div>${weather.rain}</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-sun"></i>
+                            <div>UV Index</div>
+                            <div>${weather.uv}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Reset weather display if no destination selected
+                weatherDisplay.innerHTML = `
+                    <div class="current-weather">
+                        <div class="weather-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="temperature">
+                            --°C
+                        </div>
+                    </div>
+                    
+                    <div class="weather-details">
+                        <div class="weather-detail">
+                            <i class="fas fa-tint"></i>
+                            <div>Humidity</div>
+                            <div>--%</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-wind"></i>
+                            <div>Wind</div>
+                            <div>-- km/h</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-cloud-rain"></i>
+                            <div>Rain</div>
+                            <div>--%</div>
+                        </div>
+                        <div class="weather-detail">
+                            <i class="fas fa-sun"></i>
+                            <div>UV Index</div>
+                            <div>--</div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // Packing list data - mock data for demo
+        const packingListData = {
+            tokyo: {
+                clothing: ['Light jacket', 'Long sleeve shirts', 'Jeans', 'Sweater', 'Scarf'],
+                footwear: ['Comfortable walking shoes', 'Sneakers'],
+                toiletries: ['Toothbrush', 'Toothpaste', 'Deodorant', 'Moisturizer'],
+                health: ['Pain relievers', 'Band-aids', 'Hand sanitizer']
+            },
+            bangkok: {
+                clothing: ['T-shirts', 'Shorts', 'Light dresses', 'Sun hat', 'Swimsuit'],
+                footwear: ['Sandals', 'Breathable shoes'],
+                toiletries: ['Sunscreen (SPF 50+)', 'Insect repellent', 'Aloe vera gel'],
+                health: ['Anti-diarrheal medication', 'Rehydration salts', 'Sunglasses']
+            },
+            seoul: {
+                clothing: ['Warm jacket', 'Sweaters', 'Long pants', 'Thermal underwear', 'Gloves'],
+                footwear: ['Boots', 'Warm socks'],
+                toiletries: ['Lip balm', 'Hand cream', 'Facial moisturizer'],
+                health: ['Cold medicine', 'Vitamin C', 'Hand warmers']
+            },
+            singapore: {
+                clothing: ['Light t-shirts', 'Shorts', 'Rain jacket', 'Umbrella', 'Quick-dry clothes'],
+                footwear: ['Waterproof sandals', 'Breathable sneakers'],
+                toiletries: ['Sunscreen', 'Anti-fungal powder', 'Wet wipes'],
+                health: ['Heat rash cream', 'Electrolyte packets', 'Sunglasses']
+            },
+            hongkong: {
+                clothing: ['Light layers', 'T-shirts', 'Light jacket', 'Comfortable pants', 'Sun hat'],
+                footwear: ['Walking shoes', 'Sandals'],
+                toiletries: ['Sunscreen', 'Umbrella', 'Facial mist'],
+                health: ['Air pollution mask', 'Hand sanitizer', 'Sunglasses']
+            }
+        };
+
+        // Generate packing list
+        generateListBtn.addEventListener('click', function() {
+            const selectedDestination = destinationSelect.value;
+            
+            if (selectedDestination && packingListData[selectedDestination]) {
+                const listData = packingListData[selectedDestination];
+                
+                packingList.innerHTML = `
+                    <div class="category">
+                        <h3><i class="fas fa-tshirt"></i> Clothing</h3>
+                        <ul>
+                            ${listData.clothing.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="category">
+                        <h3><i class="fas fa-shoe-prints"></i> Footwear</h3>
+                        <ul>
+                            ${listData.footwear.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="category">
+                        <h3><i class="fas fa-toilet-paper"></i> Toiletries</h3>
+                        <ul>
+                            ${listData.toiletries.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="category">
+                        <h3><i class="fas fa-first-aid"></i> Health</h3>
+                        <ul>
+                            ${listData.health.map(item => `<li><i class="fas fa-check-circle"></i> ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } else {
+                alert('Please select a destination first');
+            }
+        });
+
+        // Chatbot functionality
+        const chatbotResponses = [
+            {
+                keywords: ['hello', 'hi', 'hey'],
+                response: "Hello there! How can I assist you with your travel plans today?"
+            },
+            {
+                keywords: ['weather', 'temperature', 'climate'],
+                response: "I can provide weather information for your destination. First, select your destination from the dropdown above and I'll give you detailed weather insights."
+            },
+            {
+                keywords: ['pack', 'packing', 'what to bring'],
+                response: "I can generate a personalized packing list based on your destination's weather. Just select your destination and click 'Generate List' to see my recommendations."
+            },
+            {
+                keywords: ['flight', 'flights', 'book flight'],
+                response: "You can book flights by navigating to the 'Book Flights' section. I can help you find the best deals for your travel dates."
+            },
+            {
+                keywords: ['recommend', 'suggest', 'what to do'],
+                response: "I'd be happy to recommend activities! Could you tell me which destination you're traveling to and what kind of activities you enjoy (sightseeing, food, adventure, etc.)?"
+            },
+            {
+                keywords: ['thank', 'thanks', 'thank you'],
+                response: "You're very welcome! Is there anything else I can help you with?"
+            },
+            {
+                keywords: ['bye', 'goodbye', 'see you'],
+                response: "Safe travels! Don't hesitate to come back if you have more questions about your trip."
+            }
+        ];
+
+        function getChatbotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            for (const item of chatbotResponses) {
+                for (const keyword of item.keywords) {
+                    if (lowerMessage.includes(keyword)) {
+                        return item.response;
+                    }
+                }
+            }
+            
+            return "I'm sorry, I didn't understand that. Could you rephrase your question? I can help with weather, packing lists, flight bookings, and travel recommendations.";
+        }
+
+        function addMessageToChat(message, isUser = false) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const bubbleClass = isUser ? 'user-message' : 'bot-message';
+            
+            messageDiv.innerHTML = `
+                <div class="message-bubble ${bubbleClass}">
+                    ${message}
+                </div>
+                <div class="message-time">${timeString}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Send message button click handler
+        sendMessageBtn.addEventListener('click', function() {
+            const message = chatInput.value.trim();
+            
+            if (message) {
+                addMessageToChat(message, true);
+                chatInput.value = '';
+                
+                // Simulate typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'message';
+                typingIndicator.innerHTML = `
+                    <div class="message-bubble bot-message">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                `;
+                chatMessages.appendChild(typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Simulate delay for bot response
+                setTimeout(function() {
+                    chatMessages.removeChild(typingIndicator);
+                    const response = getChatbotResponse(message);
+                    addMessageToChat(response);
+                }, 1000 + Math.random() * 2000);
+            }
+        });
+
+        // Allow sending message with Enter key
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessageBtn.click();
+            }
+        });
+
+        // Flight search button - just for demo
+        searchFlightsBtn.addEventListener('click', function() {
+            const fromCity = document.getElementById('fromCity').value;
+            const toCity = document.getElementById('toCity').value;
+            const departureDate = document.getElementById('departureDate').value;
+            
+            if (fromCity && toCity && departureDate) {
+                alert(`Searching for flights from ${fromCity} to ${toCity} on ${departureDate}. This would connect to a flight API in a real application.`);
+            } else {
+                alert('Please fill in all required fields (From, To, and Departure Date)');
+            }
+        });
+
+        // Contact form submission - just for demo
+        submitContactBtn.addEventListener('click', function() {
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            if (name && email && message) {
+                alert(`Thank you for your message, ${name}! We'll get back to you at ${email} as soon as possible.`);
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactEmail').value = '';
+                document.getElementById('contactMessage').value = '';
+            } else {
+                alert('Please fill in all fields before submitting');
+            }
+        });
+    </script>
+</body>
+</html>
